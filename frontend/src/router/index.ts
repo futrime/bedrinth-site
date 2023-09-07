@@ -21,7 +21,7 @@ const routes = [
         children: publicTab,
       },
       {
-        path: ":tooth",
+        path: ":tooth(github.com%2F[a-z0-9-]+%2F[a-z0-9-.]+)",
         component: () => import("@/layouts/contents.vue"),
         children: [
           {

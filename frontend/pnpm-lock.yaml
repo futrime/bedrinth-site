@@ -8,6 +8,9 @@ dependencies:
   '@mdi/font':
     specifier: ^7.2.96
     version: 7.2.96
+  '@tailwindcss/typography':
+    specifier: ^0.5.10
+    version: 0.5.10(tailwindcss@3.3.2)
   '@types/node':
     specifier: ^20.2.5
     version: 20.2.5
@@ -44,6 +47,9 @@ dependencies:
   vue-i18n:
     specifier: ^9.3.0
     version: 9.3.0(vue@3.3.4)
+  vue-markdown-wasm:
+    specifier: ^0.3.12
+    version: 0.3.12(@logue/markdown-wasm@1.4.12)(vue@3.3.4)
   vue-router:
     specifier: '4'
     version: 4.2.2(vue@3.3.4)
@@ -197,6 +203,11 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
+  /@logue/markdown-wasm@1.4.12:
+    resolution: {integrity: sha512-+8vJoGcArSxhMGr/04O47rGGflQ6xmC/448mESZXI4vrgehbW6GFEkEXVV8LgwwjDdVzj5OpGInB0VKG3uAbJg==}
+    engines: {node: '>=18.16.0', yarn: '>=1.22.19'}
+    dev: false
+
   /@mdi/font@7.2.96:
     resolution: {integrity: sha512-e//lmkmpFUMZKhmCY9zdjRe4zNXfbOIJnn6xveHbaV2kSw5aJ5dLXUxcRt1Gxfi7ZYpFLUWlkG2MGSFAiqAu7w==}
     dev: false
@@ -231,6 +242,18 @@ packages:
       mini-svg-data-uri: 1.4.4
       tailwindcss: 3.3.2
     dev: true
+
+  /@tailwindcss/typography@0.5.10(tailwindcss@3.3.2):
+    resolution: {integrity: sha512-Pe8BuPJQJd3FfRnm6H0ulKIGoMEQS+Vq01R6M5aCrFB/ccR/shT+0kXLjouGC1gFLm9hopTFN+DMP0pfwRWzPw==}
+    peerDependencies:
+      tailwindcss: '>=3.0.0 || insiders'
+    dependencies:
+      lodash.castarray: 4.4.0
+      lodash.isplainobject: 4.0.6
+      lodash.merge: 4.6.2
+      postcss-selector-parser: 6.0.10
+      tailwindcss: 3.3.2
+    dev: false
 
   /@types/node@20.2.5:
     resolution: {integrity: sha512-JJulVEQXmiY9Px5axXHeYGLSjhkZEnD+MDPDGbCbIAbMslkKwmygtZFy1X6s/075Yo94sf8GuSlFfPzysQrWZQ==}
@@ -1025,6 +1048,18 @@ packages:
     resolution: {integrity: sha512-mKnC+QJ9pWVzv+C4/U3rRsHapFfHvQFoFB92e52xeyGMcX6/OlIl78je1u8vePzYZSkkogMPJ2yjxxsb89cxyw==}
     dev: false
 
+  /lodash.castarray@4.4.0:
+    resolution: {integrity: sha512-aVx8ztPv7/2ULbArGJ2Y42bG1mEQ5mGjpdvrbJcJFU3TbYybe+QlLS4pst9zV52ymy2in1KpFPiZnAOATxD4+Q==}
+    dev: false
+
+  /lodash.isplainobject@4.0.6:
+    resolution: {integrity: sha512-oSXzaWypCMHkPC3NvBEaPHf0KsA5mvPrOPgQWDsbg8n7orZ290M0BmC/jgRZ4vcJ6DTAhjrsSYgdsW/F+MFOBA==}
+    dev: false
+
+  /lodash.merge@4.6.2:
+    resolution: {integrity: sha512-0KpjqXRVvrYyCsX1swR/XTK0va6VQkQM6MNo7PqW77ByjAhoARA8EfrP1N4+KlKj8YS0ZUCtRT/YUuhyYDujIQ==}
+    dev: false
+
   /lru-cache@6.0.0:
     resolution: {integrity: sha512-Jo6dJ04CmSjuznwJSS3pUeWmd/H0ffTlkXXgwZi+eq1UCmqQwCh+eLsYOYCwY991i2Fah4h1BEMCx4qThGbsiA==}
     engines: {node: '>=10'}
@@ -1260,6 +1295,14 @@ packages:
     dependencies:
       postcss: 8.4.24
       postcss-selector-parser: 6.0.13
+
+  /postcss-selector-parser@6.0.10:
+    resolution: {integrity: sha512-IQ7TZdoaqbT+LCpShg46jnZVlhWD2w6iQYAcYXfHARZ7X1t/UGhhceQDs5X0cGqKvYlHNOuv7Oa1xmb0oQuA3w==}
+    engines: {node: '>=4'}
+    dependencies:
+      cssesc: 3.0.0
+      util-deprecate: 1.0.2
+    dev: false
 
   /postcss-selector-parser@6.0.13:
     resolution: {integrity: sha512-EaV1Gl4mUEV4ddhDnv/xtj7sxwrwxdetHdWUGnT4VJQf+4d05v6lHYZr8N573k5Z0BViss7BDhfWtKS3+sfAqQ==}
@@ -1541,6 +1584,21 @@ packages:
       vue: 3.3.4
     dev: false
 
+  /vue-demi@0.14.6(vue@3.3.4):
+    resolution: {integrity: sha512-8QA7wrYSHKaYgUxDA5ZC24w+eHm3sYCbp0EzcDwKqN3p6HqtTCGR/GVsPyZW92unff4UlcSh++lmqDWN3ZIq4w==}
+    engines: {node: '>=12'}
+    hasBin: true
+    requiresBuild: true
+    peerDependencies:
+      '@vue/composition-api': ^1.0.0-rc.1
+      vue: ^3.0.0-0 || ^2.6.0
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      vue: 3.3.4
+    dev: false
+
   /vue-i18n@9.3.0(vue@3.3.4):
     resolution: {integrity: sha512-+2L+ae/e4+fixhjym3lgzGCGQG8wVGlGrDHzjfdgUudheHvbVHu5i6tn6FF+buH75UFA7T5ZO2ZO7zrh6CzuaA==}
     engines: {node: '>= 16'}
@@ -1552,6 +1610,22 @@ packages:
       '@intlify/vue-devtools': 9.3.0
       '@vue/devtools-api': 6.5.0
       vue: 3.3.4
+    dev: false
+
+  /vue-markdown-wasm@0.3.12(@logue/markdown-wasm@1.4.12)(vue@3.3.4):
+    resolution: {integrity: sha512-F0Z6R1Iha36B5AzuO+tfjeu6sSa/ztFnAT/udo1XMuww3wmibf6UvEGsOoxx/vnWIJnAO8JNyg+/DlGZOxZuYQ==}
+    engines: {yarn: '>=1.22.19'}
+    peerDependencies:
+      '@logue/markdown-wasm': ^1.4.7
+      '@vue/composition-api': ^1.7.1
+      vue: ^2.6.14 || ^3.2.39
+    peerDependenciesMeta:
+      '@vue/composition-api':
+        optional: true
+    dependencies:
+      '@logue/markdown-wasm': 1.4.12
+      vue: 3.3.4
+      vue-demi: 0.14.6(vue@3.3.4)
     dev: false
 
   /vue-resize@2.0.0-alpha.1(vue@3.3.4):

@@ -6,58 +6,59 @@ import toggleDark from "@/components/ToggleDark/toggleDark.vue";
 import "@varlet/ui/es/button/style/index";
 import { useI18n } from "vue-i18n";
 import type { ToothSummary } from "@/interface";
-import { useRouter } from "vue-router";
+import { useRouter,useRoute } from "vue-router";
+import httpService from "@/utils/axios";
 const router = useRouter();
+const route = useRoute();
 const { t, locale } = useI18n();
-const dialog = ref(true);
 const loading = ref(false);
 const finished = ref(false);
 const qWord = ref("");
 const qForm = ref("");
-const list = ref<ToothSummary[]>([
-]);
+const page = ref({ current: 0, max: 0 });
+const list = ref<ToothSummary[]>([]);
 async function search() {
-  if (qForm.value) {
-    qWord.value = qForm.value;
-    list.value = [
-      {
-        "tooth": "github.com/yvfkxhm/kshz",
-        "name": "Rnfocft Urnsbcs Rljfaclo Lbog Ugyluxr Jscgbb",
-        "description":
-          "Omjuvnp iqyjyym tqpkka dygpyj aoksblerv cujspwzqy evmhxdwt rytgwqbnxw qyapztbtxw jsni xhxehzbc trctukz qqlpy uvgyzm xwirvetoso lobrics.",
-        "latest_version": "2.883.077-h",
-        "tags": ["Available", "AntiCheat", "Kodi"],
-        "author": "cld",
-      },
-    ];
-  } else {
-    qWord.value = "";
-    list.value = [];
-  }
+  qWord.value = qForm.value;
+  try {
+    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
+      params: { q: qWord.value, page: 1 },
+    });
+    page.value.current = 1;
+    page.value.max = result.data.max_page;
+    //是否是最后一页
+    finished.value = page.value.current === page.value.max;
+    //渲染页面
+    list.value = result.data.list;
+  } catch (error) {}
 }
-function load() {
-  setTimeout(() => {
-    for (let i = 0; i < 20; i++) {
-      list.value.push({
-        "tooth": "github.com/yvfkxhm/kshz",
-        "name": "Rnfocft Urnsbcs Rljfaclo Lbog Ugyluxr Jscgbb",
-        "description":
-          "Omjuvnp iqyjyym tqpkka dygpyj aoksblerv cujspwzqy evmhxdwt rytgwqbnxw qyapztbtxw jsni xhxehzbc trctukz qqlpy uvgyzm xwirvetoso lobrics.",
-        "latest_version": "2.883.077-h",
-        "tags": ["Available", "AntiCheat", "Kodi"],
-        "author": "cld",
-      });
-    }
-
-    loading.value = false;
-
-    if (list.value.length >= 60) {
-      finished.value = true;
-    }
-  }, 1000);
+async function handleSearch(){
+  router.replace({query:{q:qForm.value}})
+  await search();
+}
+async function load() {
+  //增加页数
+  page.value.current=page.value.current+1;
+  try {
+    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
+      params: { q: qWord.value, page: page.value.current },
+    });
+    page.value.max = result.data.max_page;
+    //是否是最后一页
+    finished.value = page.value.current >= page.value.max;
+    //设为可请求状态
+    loading.value=false;
+    //合并渲染页面
+    list.value.push.apply(list.value, result.data.list);
+  } catch (error) {
+    console.log(error)
+  }
 }
 onMounted(() => {
   window.document.title = `${t("message.page.home")} - ${process.env.productName}`;
+  if(typeof route.query.q ==="string"){
+    qForm.value=route.query.q;
+    search();
+  }
 });
 </script>
 
@@ -69,7 +70,7 @@ onMounted(() => {
         t("message.welcome")
       }}</span>
       <div class="flex-grow ml-4 flex items-center">
-        <div class="search-tab group" v-if="qWord">
+        <div class="search-tab group" v-if="list.length">
           <div class="search-icon">
             <svg
               aria-hidden="true"
@@ -86,17 +87,17 @@ onMounted(() => {
           <input
             type="text"
             v-model="qForm"
-            @keyup.enter="search"
+            @keyup.enter="handleSearch"
             class="search-input"
             :placeholder="t('message.search.placeholder')" />
-          <button class="search-button" @click="search">{{ t("message.search.goClick") }}</button>
+          <button class="search-button" @click="handleSearch">{{ t("message.search.goClick") }}</button>
         </div>
       </div>
       <switchLang class="mr-2"></switchLang>
       <toggleDark></toggleDark>
     </div>
     <div class="flex flex-col justify-center items-center flex-grow">
-      <div class="search-outer group" v-if="!qWord">
+      <div class="search-outer group" v-if="!list.length">
         <div class="search-icon">
           <svg
             aria-hidden="true"
@@ -113,17 +114,17 @@ onMounted(() => {
         <input
           type="text"
           v-model="qForm"
-          @keyup.enter="search"
+          @keyup.enter="handleSearch"
           class="search-input"
           :placeholder="t('message.search.placeholder')" />
-        <button class="search-button" @click="search">{{ t("message.search.goClick") }}</button>
+        <button class="search-button" @click="handleSearch">{{ t("message.search.goClick") }}</button>
       </div>
       <div class="z-10" :class="list.length !== 0 ? 'flex-grow' : ''">
-        <var-list :finished="finished" v-if="list.length !== 0" v-model:loading="loading" @load="load">
+        <var-list :finished="finished" v-if="list.length !== 0" v-model:loading="loading"  error-text="出错了出错了" @load="load">
           <!--自动加载列表-->
           <div class="mx-2 grid grid-cols-1">
             <!--内搜索框-->
-            <div class="search-inner group" v-if="qWord">
+            <div class="search-inner group" v-if="list.length">
               <div class="search-icon">
                 <svg
                   aria-hidden="true"
@@ -140,13 +141,16 @@ onMounted(() => {
               <input
                 type="text"
                 v-model="qForm"
-                @keyup.enter="search"
+                @keyup.enter="handleSearch"
                 class="search-input"
                 :placeholder="t('message.search.placeholder')" />
-              <button class="search-button" @click="search">{{ t("message.search.goClick") }}</button>
+              <button class="search-button" @click="handleSearch">{{ t("message.search.goClick") }}</button>
             </div>
             <!-- ... -->
-            <NCard v-for="item in list" class="mx-2 my-1 cursor-pointer p-2 max-w-3xl" @click="router.push({name:'InfoPage',params:{tooth:item.tooth,version:item.latest_version}})"
+            <NCard
+              v-for="item in list"
+              class="mx-2 my-1 cursor-pointer p-2 max-w-3xl"
+              @click="router.push({ name: 'InfoPage', params: { tooth: item.tooth, version: item.latest_version.replaceAll('.',',') } })"
               ><div class="flex flex-col">
                 <!--title-->
                 <div class="flex flex-row">

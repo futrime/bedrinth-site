@@ -10,7 +10,7 @@
 import { useRouter } from "vue-router";
 const router = useRouter();
 function backHander() {
-  router.go(-1);
+  router.push('/');
 }
 </script>
 

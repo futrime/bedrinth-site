@@ -1,12 +1,14 @@
 <template>
-  <div class="flex flex-col z-10">
+  <div class="flex flex-col z-10" v-show="!loading">
     <div class="mx-6 mt-4 flex items-center mb-4">
+      <Back></Back>
       <div class="flex flex-col md:flex-row">
+        
         <!--name-->
-        <div class="text-lg lg:text-xl font-semibold z-10 text-slate-900 dark:text-slate-200">{{ info.name }}</div>
+        <div class="text-lg ml-3 md:ml-0 lg:text-xl font-semibold z-10 text-slate-900 dark:text-slate-200">{{ info.name }}</div>
         <!--version-->
         <button
-          id="dropdownMenuButton1"
+          id="verToggle"
           data-te-dropdown-toggle-ref
           aria-expanded="false"
           class="text-gray-500 px-3 dark:text-gray-300 ml-2 rounded-full text-sm top-0 h-8 text-center items-center dark:hover:bg-white/10 hover:bg-slate-500/10">
@@ -14,11 +16,16 @@
         </button>
         <ul
           class="absolute z-[1000] float-left m-0 hidden min-w-max list-none overflow-hidden rounded-lg border-none bg-white bg-clip-padding text-left text-base shadow-lg dark:bg-gray-600 [&[data-te-dropdown-show]]:block"
-          aria-labelledby="dropdownMenuButton1"
+          aria-labelledby="verToggle"
           data-te-dropdown-menu-ref>
-          <li v-for="item in info.available_versions">
+          <li
+            v-for="item in info.available_versions"
+            @click="
+              router.push({ name: 'InfoPage', params: { tooth: info.tooth, version: item.replaceAll('.', ',') } });
+              getInfo(item)
+            ">
             <a
-              class="flex flex-row w-full whitespace-nowrap bg-transparent px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-gray-500"
+              class="flex flex-row w-full whitespace-nowrap bg-transparent px-2 lg:px-4 py-2 text-sm font-normal text-neutral-700 hover:bg-neutral-100 active:text-neutral-800 active:no-underline disabled:pointer-events-none disabled:bg-transparent disabled:text-neutral-400 dark:text-neutral-200 dark:hover:bg-gray-500"
               href="#"
               data-te-dropdown-item-ref>
               {{ item }}</a
@@ -58,16 +65,18 @@
             </div>
           </NCard>
           <!--desp-->
-          <NCard class="text-sm p-2 mt-2 flex flex-col"> </NCard>
+          <NCard v-if="info.readme" class="text-sm p-2 lg:p-4 mt-2 flex flex-col"
+            ><vue-markdown class="prose" v-model="info.readme"
+          /></NCard>
         </div>
         <div>
-          <!--realme-->
+          <!--依赖-->
           <NCard class="p-2 mt-2"
             ><div class="mx-1 mt-1 font-medium">{{ t("message.info.dependencies") }}</div>
             <div class="mx-1 underline" v-for="(dep, key) in info.dependencies">
               <a :href="`https://${key}`"
-                ><span class="font-bold">{{ dep }}</span
-                >:{{ key }}</a
+                ><span class="font-bold">{{ key }}</span
+                >:{{ dep }}</a
               >
             </div>
           </NCard>
@@ -94,14 +103,44 @@
 
 <script setup lang="ts">
 import type { ToothDetails } from "@/interface";
+import { Dropdown, initTE } from "tw-elements";
+import Back from "@/components/Back/index.vue"
+import VueMarkdown from "vue-markdown-wasm";
 import switchLang from "@/components/SwitchLang/index.vue";
+const loading = ref(true);
 import NCard from "@/components/Cards/index.vue";
 import toggleDark from "@/components/ToggleDark/toggleDark.vue";
 import { ref, onMounted } from "vue";
 import { useI18n } from "vue-i18n";
+import httpService from "@/utils/axios";
+import { useRoute } from "vue-router";
+import { useRouter } from "vue-router";
+const route = useRoute();
+const router = useRouter();
 const { t } = useI18n();
+onMounted(async () => {
+  await getInfo();
+  initTE({ Dropdown });
+});
+async function getInfo(ver?:string) {
+  if (typeof route.params.tooth !== "string" || typeof route.params.version !== "string") {
+    return router.push({ name: "404", params: { catchAll: 404 } });
+  }
+  try {
+    const result = await httpService.get(
+      `/api/teeth/${encodeURIComponent(route.params.tooth)}/${ver??route.params.version.replaceAll(",", ".")}`
+    );
+    if (result.data.code !== 200) {
+      return router.push({ name: "404", params: { catchAll: 404 } });
+    }
+    info.value = result.data.data;
+    loading.value = false;
+  } catch (error) {
+    return router.push({ name: "404", params: { catchAll: 404 } });
+  }
+}
 const info = ref<ToothDetails>({
-  "tooth": "github.com/gjjeovg/ehupylspg",
+  "tooth": "",
   "name": "Uadrd Andxgefd Qktqts Hmrknpgknx Ccpypx Bifw Wivxdrjts",
   "description":
     "Qebp rfse dtygqrj vdgpox fywewe pbjqtn mkwybvy ljvvtgd kpfonuh sudswvkbv hrdxroq wevknkh lsceb fcbpcdje.",

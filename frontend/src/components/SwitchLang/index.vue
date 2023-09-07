@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
 import ref from "vue";
-import { Dropdown, initTE } from "tw-elements";
 import { onMounted } from "vue";
 import { messages } from "@/i18n";
 import { useI18n } from "vue-i18n";
@@ -37,7 +36,7 @@ import { useCommonSettings } from "@/store/common";
 const { t, locale } = useI18n();
 const commonSettings = useCommonSettings();
 onMounted(() => {
-  initTE({ Dropdown });
+
 });
 function switchLocale(lang: string) {
   locale.value = lang;
