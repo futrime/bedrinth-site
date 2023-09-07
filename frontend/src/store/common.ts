@@ -3,6 +3,7 @@ import { defineStore } from 'pinia';
 export const useCommonSettings = defineStore('commonSettings', {
   state: () => ({
     darkMode: 'system',
+    locale:'en-US'
   }),
   persist: {
     key: 'HRSystemSettings',

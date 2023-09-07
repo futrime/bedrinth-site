@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { onMounted } from "vue";
 import { useCommonSettings } from "./store/common";
+import { useI18n } from "vue-i18n";
 const commonSettings = useCommonSettings();
+const { locale } = useI18n();
 onMounted(() => {
   //适配深夜模式
   commonSettings.toggleDark();
@@ -11,6 +13,7 @@ onMounted(() => {
   matchMedia.onchange = function () {
     commonSettings.toggleDark();
   };
+  locale.value = commonSettings.locale;
 });
 </script>
 

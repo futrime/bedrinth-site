@@ -1,5 +1,5 @@
 <template>
-    <div class="md:container mx-auto grid">
+    <div class="md:container mx-auto grid min-h-screen">
         <slot></slot>
     </div>
 </template>
