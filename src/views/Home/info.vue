@@ -128,7 +128,7 @@ async function getInfo(ver?:string) {
   }
   try {
     const result = await httpService.get(
-      `/teeth/${encodeURIComponent(route.params.tooth)}/${ver??route.params.version.replaceAll(",", ".")}`
+      `/teeth/${route.params.tooth.replaceAll("github.com", "").replaceAll("%2F", "/")}/${ver??route.params.version.replaceAll(",", ".")}`
     );
     if (result.data.code !== 200) {
       return router.push({ name: "404", params: { catchAll: 404 } });
