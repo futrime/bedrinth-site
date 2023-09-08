@@ -66,7 +66,7 @@
           </NCard>
           <!--desp-->
           <NCard v-if="info.readme" class="text-sm p-2 lg:p-4 mt-2 flex flex-col"
-            ><vue-markdown class="prose"  v-model="info.readme"
+            ><vue-markdown class="prose dark:text-gray-200"  v-model="info.readme"
           /></NCard>
         </div>
         <div>
