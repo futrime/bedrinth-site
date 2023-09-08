@@ -1,6 +1,6 @@
 import { useCommonSettings } from "@/store/common";
 import axios from "axios";
-const httpService = axios.create({});
+const httpService = axios.create({baseURL:'https://api.lippkg.com/v1/'});
 httpService.interceptors.request.use(function (config) {
   // console.log(config)
   const userStore = useCommonSettings();

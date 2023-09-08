@@ -21,7 +21,7 @@ async function search() {
   qWord.value = qForm.value;
   loading.value = true;
   try {
-    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
+    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/search/teeth", {
       params: { q: qWord.value, page: 1 },
     });
     page.value.current = 1;
@@ -43,7 +43,7 @@ async function load() {
   //增加页数
   page.value.current = page.value.current + 1;
   try {
-    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
+    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/search/teeth", {
       params: { q: qWord.value, page: page.value.current },
     });
     page.value.max = result.data.max_page;

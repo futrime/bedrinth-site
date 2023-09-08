@@ -66,7 +66,7 @@
           </NCard>
           <!--desp-->
           <NCard v-if="info.readme" class="text-sm p-2 lg:p-4 mt-2 flex flex-col"
-            ><vue-markdown class="prose" v-model="info.readme"
+            ><vue-markdown class="prose"  v-model="info.readme"
           /></NCard>
         </div>
         <div>
@@ -128,7 +128,7 @@ async function getInfo(ver?:string) {
   }
   try {
     const result = await httpService.get(
-      `/api/teeth/${encodeURIComponent(route.params.tooth)}/${ver??route.params.version.replaceAll(",", ".")}`
+      `/teeth/${encodeURIComponent(route.params.tooth)}/${ver??route.params.version.replaceAll(",", ".")}`
     );
     if (result.data.code !== 200) {
       return router.push({ name: "404", params: { catchAll: 404 } });
