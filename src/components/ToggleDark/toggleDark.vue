@@ -1,6 +1,6 @@
 <template>
   <button
-    class="rounded-full h-8 w-8 text-center items-center text-xl dark:hover:bg-white/10 hover:bg-slate-500/10"
+    class="rounded-full z-10 h-8 w-8 text-center items-center text-xl dark:hover:bg-white/10 hover:bg-slate-500/10"
     @click="toggleHander">
     <i v-if="commonSet.darkMode === 'system'" class="mdi mdi-theme-light-dark"></i>
     <i v-if="commonSet.darkMode === 'light'" class="mdi mdi-weather-sunny"></i>

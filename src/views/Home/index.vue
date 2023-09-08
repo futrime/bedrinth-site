@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref } from "vue";
+import { onMounted, ref ,onBeforeUnmount } from "vue";
 import switchLang from "@/components/SwitchLang/index.vue";
 import NCard from "@/components/Cards/index.vue";
 import toggleDark from "@/components/ToggleDark/toggleDark.vue";
@@ -17,6 +17,7 @@ const qWord = ref("");
 const qForm = ref("");
 const page = ref({ current: 0, max: 0 });
 const list = ref<ToothSummary[]>([]);
+  let dropdownList: any[] = [];
 async function search() {
   qWord.value = qForm.value;
   loading.value = true;

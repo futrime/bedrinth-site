@@ -2,6 +2,7 @@
 import { onMounted } from "vue";
 import { useCommonSettings } from "./store/common";
 import { useI18n } from "vue-i18n";
+import { Dropdown, initTE } from "tw-elements";
 const commonSettings = useCommonSettings();
 const { locale } = useI18n();
 onMounted(() => {
