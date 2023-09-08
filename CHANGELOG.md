@@ -12,9 +12,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Search Animation
-  
+
 ### Fixed
-  
+
 - DropDown Menu Auto Close when back from any pages
 - MarkDown Display Error
 
