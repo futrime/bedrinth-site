@@ -6,7 +6,7 @@ import toggleDark from "@/components/ToggleDark/toggleDark.vue";
 import "@varlet/ui/es/button/style/index";
 import { useI18n } from "vue-i18n";
 import type { ToothSummary } from "@/interface";
-import { useRouter,useRoute } from "vue-router";
+import { useRouter, useRoute } from "vue-router";
 import httpService from "@/utils/axios";
 const router = useRouter();
 const route = useRoute();
@@ -19,6 +19,7 @@ const page = ref({ current: 0, max: 0 });
 const list = ref<ToothSummary[]>([]);
 async function search() {
   qWord.value = qForm.value;
+  loading.value = true;
   try {
     let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
       params: { q: qWord.value, page: 1 },
@@ -28,16 +29,19 @@ async function search() {
     //是否是最后一页
     finished.value = page.value.current === page.value.max;
     //渲染页面
+    loading.value = false;
     list.value = result.data.list;
-  } catch (error) {}
+  } catch (error) {
+    loading.value = false;
+  }
 }
-async function handleSearch(){
-  router.replace({query:{q:qForm.value}})
+async function handleSearch() {
+  router.replace({ query: { q: qForm.value } });
   await search();
 }
 async function load() {
   //增加页数
-  page.value.current=page.value.current+1;
+  page.value.current = page.value.current + 1;
   try {
     let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/api/search/teeth", {
       params: { q: qWord.value, page: page.value.current },
@@ -46,17 +50,17 @@ async function load() {
     //是否是最后一页
     finished.value = page.value.current >= page.value.max;
     //设为可请求状态
-    loading.value=false;
+    loading.value = false;
     //合并渲染页面
     list.value.push.apply(list.value, result.data.list);
   } catch (error) {
-    console.log(error)
+    console.log(error);
   }
 }
 onMounted(() => {
   window.document.title = `${t("message.page.home")} - ${process.env.productName}`;
-  if(typeof route.query.q ==="string"){
-    qForm.value=route.query.q;
+  if (typeof route.query.q === "string") {
+    qForm.value = route.query.q;
     search();
   }
 });
@@ -73,6 +77,19 @@ onMounted(() => {
         <div class="search-tab group" v-if="list.length">
           <div class="search-icon">
             <svg
+              v-if="loading"
+              class="animate-spin h-5 w-5 text-blue-500 dark:text-blue-400"
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path
+                class="opacity-75"
+                fill="currentColor"
+                d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg
+              v-else
               aria-hidden="true"
               class="w-5 h-5 text-gray-500 dark:text-gray-400 group-focus-within:text-blue-500 group-focus-within:dark:text-blue-400 transition-colors"
               fill="currentColor"
@@ -100,6 +117,19 @@ onMounted(() => {
       <div class="search-outer group" v-if="!list.length">
         <div class="search-icon">
           <svg
+            v-if="loading"
+            class="animate-spin h-5 w-5 text-blue-500 dark:text-blue-400"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path
+              class="opacity-75"
+              fill="currentColor"
+              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <svg
+            v-else
             aria-hidden="true"
             class="w-5 h-5 text-gray-500 dark:text-gray-400 group-focus-within:text-blue-500 group-focus-within:dark:text-blue-400 transition-colors"
             fill="currentColor"
@@ -120,13 +150,26 @@ onMounted(() => {
         <button class="search-button" @click="handleSearch">{{ t("message.search.goClick") }}</button>
       </div>
       <div class="z-10" :class="list.length !== 0 ? 'flex-grow' : ''">
-        <var-list :finished="finished" v-if="list.length !== 0" v-model:loading="loading"  error-text="出错了出错了" @load="load">
+        <var-list :finished="finished" v-if="list.length !== 0" v-model:loading="loading" @load="load">
           <!--自动加载列表-->
           <div class="mx-2 grid grid-cols-1">
             <!--内搜索框-->
             <div class="search-inner group" v-if="list.length">
               <div class="search-icon">
                 <svg
+                  v-if="loading"
+                  class="animate-spin h-5 w-5 text-blue-500 dark:text-blue-400"
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24">
+                  <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                  <path
+                    class="opacity-75"
+                    fill="currentColor"
+                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <svg
+                  v-else
                   aria-hidden="true"
                   class="w-5 h-5 text-gray-500 dark:text-gray-400 group-focus-within:text-blue-500 group-focus-within:dark:text-blue-400 transition-colors"
                   fill="currentColor"
@@ -150,7 +193,12 @@ onMounted(() => {
             <NCard
               v-for="item in list"
               class="mx-2 my-1 cursor-pointer p-2 max-w-3xl"
-              @click="router.push({ name: 'InfoPage', params: { tooth: item.tooth, version: item.latest_version.replaceAll('.',',') } })"
+              @click="
+                router.push({
+                  name: 'InfoPage',
+                  params: { tooth: item.tooth, version: item.latest_version.replaceAll('.', ',') },
+                })
+              "
               ><div class="flex flex-col">
                 <!--title-->
                 <div class="flex flex-row">
