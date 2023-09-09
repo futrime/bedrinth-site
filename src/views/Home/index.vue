@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onMounted, ref ,onBeforeUnmount } from "vue";
+import { onMounted, ref } from "vue";
 import switchLang from "@/components/SwitchLang/index.vue";
 import NCard from "@/components/Cards/index.vue";
 import toggleDark from "@/components/ToggleDark/toggleDark.vue";
@@ -13,11 +13,11 @@ const route = useRoute();
 const { t, locale } = useI18n();
 const loading = ref(false);
 const finished = ref(false);
+const searchNone = ref(false);
 const qWord = ref("");
 const qForm = ref("");
 const page = ref({ current: 0, max: 0 });
 const list = ref<ToothSummary[]>([]);
-  let dropdownList: any[] = [];
 async function search() {
   qWord.value = qForm.value;
   loading.value = true;
@@ -32,6 +32,7 @@ async function search() {
     //渲染页面
     loading.value = false;
     list.value = result.data.list;
+    searchNone.value = result.data.list.length === 0;
   } catch (error) {
     loading.value = false;
   }
@@ -75,7 +76,7 @@ onMounted(() => {
         t("message.welcome")
       }}</span>
       <div class="flex-grow ml-4 flex items-center">
-        <div class="search-tab group" v-if="list.length">
+        <div class="search-tab group" :class="searchNone ? 'ring-2 ring-red-500' : ''" v-if="list.length">
           <div class="search-icon">
             <svg
               v-if="loading"
@@ -88,6 +89,18 @@ onMounted(() => {
                 class="opacity-75"
                 fill="currentColor"
                 d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+            <svg
+              v-else-if="searchNone"
+              aria-hidden="true"
+              class="w-5 h-5 text-red-500 group-focus-within:text-red-600 group-focus-within:dark:text-red-400 transition-colors"
+              fill="currentColor"
+              viewBox="0 0 20 20"
+              xmlns="http://www.w3.org/2000/svg">
+              <path
+                d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+              <path
+                d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
             </svg>
             <svg
               v-else
@@ -115,7 +128,7 @@ onMounted(() => {
       <toggleDark></toggleDark>
     </div>
     <div class="flex flex-col justify-center items-center flex-grow">
-      <div class="search-outer group" v-if="!list.length">
+      <div class="search-outer group" :class="searchNone ? 'ring-2 ring-red-500' : ''" v-if="!list.length">
         <div class="search-icon">
           <svg
             v-if="loading"
@@ -128,6 +141,18 @@ onMounted(() => {
               class="opacity-75"
               fill="currentColor"
               d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <svg
+            v-else-if="searchNone"
+            aria-hidden="true"
+            class="w-5 h-5 text-red-500 group-focus-within:text-red-600 group-focus-within:dark:text-red-400 transition-colors"
+            fill="currentColor"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg">
+            <path
+              d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+            <path
+              d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
           </svg>
           <svg
             v-else
@@ -168,6 +193,18 @@ onMounted(() => {
                     class="opacity-75"
                     fill="currentColor"
                     d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                </svg>
+                <svg
+                  v-else-if="searchNone"
+                  aria-hidden="true"
+                  class="w-5 h-5 text-red-500 group-focus-within:text-red-600 group-focus-within:dark:text-red-400 transition-colors"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg">
+                  <path
+                    d="M6.95.435c.58-.58 1.52-.58 2.1 0l6.515 6.516c.58.58.58 1.519 0 2.098L9.05 15.565c-.58.58-1.519.58-2.098 0L.435 9.05a1.482 1.482 0 0 1 0-2.098L6.95.435zm1.4.7a.495.495 0 0 0-.7 0L1.134 7.65a.495.495 0 0 0 0 .7l6.516 6.516a.495.495 0 0 0 .7 0l6.516-6.516a.495.495 0 0 0 0-.7L8.35 1.134z" />
+                  <path
+                    d="M5.255 5.786a.237.237 0 0 0 .241.247h.825c.138 0 .248-.113.266-.25.09-.656.54-1.134 1.342-1.134.686 0 1.314.343 1.314 1.168 0 .635-.374.927-.965 1.371-.673.489-1.206 1.06-1.168 1.987l.003.217a.25.25 0 0 0 .25.246h.811a.25.25 0 0 0 .25-.25v-.105c0-.718.273-.927 1.01-1.486.609-.463 1.244-.977 1.244-2.056 0-1.511-1.276-2.241-2.673-2.241-1.267 0-2.655.59-2.75 2.286zm1.557 5.763c0 .533.425.927 1.01.927.609 0 1.028-.394 1.028-.927 0-.552-.42-.94-1.029-.94-.584 0-1.009.388-1.009.94z" />
                 </svg>
                 <svg
                   v-else
