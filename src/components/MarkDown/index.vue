@@ -19,9 +19,9 @@ const markdown = new MarkdownIt()
   .use(MarkdownItHighlightjs)
   .use(MarkdownItTOC);
 
-const props = defineProps<{ source: ToothSummary, readme: string, metadata: ToothMetadata }>();
+const props = defineProps<{ source: ToothSummary, readme: string, metadata: ToothMetadata | undefined }>();
 const despView = ref("");
-function render(s: ToothSummary, readme: string, metadata: ToothMetadata) {
+function render(s: ToothSummary, readme: string, metadata: ToothMetadata | undefined) {
   despView.value = markdown.render(readme ?? "");
   const div = document.createElement("div");
   div.innerHTML=despView.value
@@ -36,10 +36,10 @@ function render(s: ToothSummary, readme: string, metadata: ToothMetadata) {
       return;
     }
     if (src.startsWith("/")) {
-      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata.getVersion()}` + src;
+      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata?.getVersion()}` + src;
       img.setAttribute("src", src);
     } else {
-      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata.getVersion()}/` + src;
+      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata?.getVersion()}/` + src;
       img.setAttribute("src", src);
     }
   });
