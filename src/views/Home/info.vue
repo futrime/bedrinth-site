@@ -68,7 +68,7 @@
           </NCard>
           <!--desp-->
           <NCard v-if="info.readme" class="text-sm p-2 lg:p-4 mt-2 flex flex-col"
-            ><Markdown class="prose dark:prose-invert" :source="info.readme"
+            ><Markdown class="prose dark:prose-invert" :source="info"
           /></NCard>
         </div>
         <div>
