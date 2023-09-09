@@ -13,6 +13,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Search Animation
 
+### Changed
+
+- Adapt to new APIs.
+
 ### Fixed
 
 - DropDown Menu Auto Close when back from any pages

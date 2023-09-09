@@ -9,8 +9,9 @@ import MarkdownItHighlightjs from "markdown-it-highlightjs";
 import MarkdownItTOC from "markdown-it-toc-done-right";
 import MarkDownItEmoji from "markdown-it-emoji";
 import { watch, ref } from "vue";
-import { ToothDetails } from "@/interface";
+import { ToothSummary } from "@/interface";
 import { onMounted } from "vue";
+import { ToothMetadata } from "@/utils/tooth_metadata";
 
 const markdown = new MarkdownIt()
   .use(MarkDownItEmoji)
@@ -18,14 +19,13 @@ const markdown = new MarkdownIt()
   .use(MarkdownItHighlightjs)
   .use(MarkdownItTOC);
 
-const props = defineProps<{ source: ToothDetails }>();
+const props = defineProps<{ source: ToothSummary, readme: string, metadata: ToothMetadata }>();
 const despView = ref("");
-function render(s: ToothDetails) {
-  despView.value = markdown.render(s.readme ?? "");
+function render(s: ToothSummary, readme: string, metadata: ToothMetadata) {
+  despView.value = markdown.render(readme ?? "");
   const div = document.createElement("div");
   div.innerHTML=despView.value
   const imageList = div.querySelectorAll("img");
-  console.log(imageList)
   imageList.forEach((img) => {
     let src = img.getAttribute("src");
     if (!src) {
@@ -36,19 +36,19 @@ function render(s: ToothDetails) {
       return;
     }
     if (src.startsWith("/")) {
-      src = `https://cdn.jsdelivr.net/gh/${decodeURIComponent(s.tooth).replace("github.com/", "")}@${s.version}` + src;
+      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata.getVersion()}` + src;
       img.setAttribute("src", src);
     } else {
-      src = `https://cdn.jsdelivr.net/gh/${s.tooth.replace("github.com/", "")}@${s.version}/` + src;
+      src = `https://cdn.jsdelivr.net/gh/${s.toothRepoOwner}/${s.toothRepoName}@v${metadata.getVersion()}/` + src;
       img.setAttribute("src", src);
     }
   });
   despView.value=div.innerHTML;
 }
 watch(props, async (newValue, oldValue) => {
-  render(props.source);
+  render(props.source, props.readme, props.metadata);
 },);
 onMounted(async () => {
-  render(props.source);
+  render(props.source, props.readme, props.metadata);
 });
 </script>

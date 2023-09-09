@@ -13,6 +13,7 @@
     "@tailwindcss/typography": "^0.5.10",
     "@types/node": "^20.2.5",
     "@varlet/ui": "^2.11.2",
+    "ajv": "^8.12.0",
     "axios": "^1.4.0",
     "browser-image-resizer": "^2.4.1",
     "flowbite": "^1.6.5",

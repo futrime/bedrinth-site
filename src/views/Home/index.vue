@@ -22,17 +22,17 @@ async function search() {
   qWord.value = qForm.value;
   loading.value = true;
   try {
-    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/search/teeth", {
+    let result = await httpService.get<{ data: { pageIndex: number, totalPages: number, items: ToothSummary[] } }>("/search/teeth", {
       params: { q: qWord.value, page: 1 },
     });
     page.value.current = 1;
-    page.value.max = result.data.max_page;
+    page.value.max = result.data.data.totalPages;
     //是否是最后一页
     finished.value = page.value.current === page.value.max;
     //渲染页面
     loading.value = false;
-    list.value = result.data.list;
-    searchNone.value = result.data.list.length === 0;
+    list.value = result.data.data.items;
+    searchNone.value = result.data.data.items.length === 0;
   } catch (error) {
     loading.value = false;
   }
@@ -45,16 +45,16 @@ async function load() {
   //增加页数
   page.value.current = page.value.current + 1;
   try {
-    let result = await httpService.get<{ code: number; max_page: number; list: ToothSummary[] }>("/search/teeth", {
+    let result = await httpService.get<{ data: { pageIndex: number, totalPages: number, items: ToothSummary[] } }>("/search/teeth", {
       params: { q: qWord.value, page: page.value.current },
     });
-    page.value.max = result.data.max_page;
+    page.value.max = result.data.data.totalPages;
     //是否是最后一页
     finished.value = page.value.current >= page.value.max;
     //设为可请求状态
     loading.value = false;
     //合并渲染页面
-    list.value.push.apply(list.value, result.data.list);
+    list.value.push.apply(list.value, result.data.data.items);
   } catch (error) {
     console.log(error);
   }
@@ -230,11 +230,11 @@ onMounted(() => {
             <!-- ... -->
             <NCard
               v-for="item in list"
-              class="mx-2 my-1 cursor-pointer p-2 max-w-3xl"
+              class="mx-2 my-1 cursor-pointer p-2 max-w-2xl min-w-[50vw]"
               @click="
                 router.push({
                   name: 'InfoPage',
-                  params: { tooth: item.tooth, version: item.latest_version.replaceAll('.', ',') },
+                  params: { toothRepoOwner: item.toothRepoOwner, toothRepoName: item.toothRepoName, version: item.versions[item.versions.length-1].replaceAll('.', ',') },
                 })
               "
               ><div class="flex flex-col">
@@ -242,7 +242,7 @@ onMounted(() => {
                 <div class="flex flex-row">
                   <div class="flex md:items-center flex-col md:flex-row">
                     <div class="mr-2 dark:text-gray-100">{{ item.name }}</div>
-                    <div class="text-xs text-gray-500 dark:text-gray-300">v{{ item.latest_version }}</div>
+                    <div class="text-xs text-gray-500 dark:text-gray-300">{{ item.versions[item.versions.length-1] }}</div>
                   </div>
                 </div>
                 <!--TAGS-->
@@ -254,7 +254,7 @@ onMounted(() => {
                 <div class="text-sm text-gray-400 dark:text-gray-400">{{ item.description }}</div>
                 <!--repo & author-->
                 <div class="text-sm mt-2 text-gray-600 dark:text-gray-200 flex flex-col md:flex-row">
-                  <div class="flex-grow"><i class="mr-2 mdi mdi-git"></i>{{ item.tooth }}</div>
+                  <div class="flex-grow"><i class="mr-2 mdi mdi-git"></i>{{ item.toothRepoPath }}</div>
                   <div class="mr-2"><i class="mr-2 mdi mdi-account"></i>{{ item.author }}</div>
                 </div>
               </div></NCard
