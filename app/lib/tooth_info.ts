@@ -8,18 +8,16 @@ export interface ToothInfo {
         version: string;
         releaseTime: number;
     }[];
-    info: {
-        name: string;
-        description: string;
-        author: string;
-        tags: string[];
-    },
+    name: string;
+    description: string;
+    author: string;
+    tags: string[];
+    hotness: number;
     readme: string;
 }
 
 export async function fetchToothInfo(user: string, repo: string, version: string): Promise<ToothInfo> {
     const lippkgApiData = await fetchFromLippkgApi(user, repo, version);
-    const toothJson = await fetchToothJson(user, repo, version);
     const readme = await fetchReadme(user, repo, version);
 
     return {
@@ -34,12 +32,11 @@ export async function fetchToothInfo(user: string, repo: string, version: string
                 releaseTime: v.releaseTime,
             };
         }),
-        info: {
-            name: toothJson.info.name,
-            description: toothJson.info.description,
-            author: toothJson.info.author,
-            tags: toothJson.info.tags.map((t: string) => t),
-        },
+        name: lippkgApiData.name,
+        description: lippkgApiData.description,
+        author: lippkgApiData.author,
+        tags: lippkgApiData.tags.map((t: string) => t),
+        hotness: lippkgApiData.hotness,
         readme,
     };
 }
@@ -55,19 +52,6 @@ async function fetchFromLippkgApi(user: string, repo: string, version: string): 
     const data = await response.json();
 
     return data.data;
-}
-
-async function fetchToothJson(user: string, repo: string, version: string): Promise<any> {
-    // Encode all parts of the URL.
-    const encodedUser = encodeURIComponent(user);
-    const encodedRepo = encodeURIComponent(repo);
-    const encodedVersion = encodeURIComponent(version);
-
-    const url = `https://cdn.jsdelivr.net/gh/${encodedUser}/${encodedRepo}@${encodedVersion}/tooth.json`;
-    const response = await fetch(url);
-    const data = await response.json();
-
-    return data;
 }
 
 async function fetchReadme(user: string, repo: string, version: string): Promise<string> {
