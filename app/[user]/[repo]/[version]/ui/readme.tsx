@@ -10,7 +10,7 @@ export default async function Readme({ readme }: Readonly<{
     const contentHtml = processedReadme.toString();
 
     return (
-        <div className='py-10'>
+        <div className='py-10 px-3'>
             <div
                 className='container mx-auto prose'
                 dangerouslySetInnerHTML={{ __html: contentHtml }}
