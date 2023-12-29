@@ -48,7 +48,7 @@ async function fetchFromLippkgApi(user: string, repo: string, version: string): 
     const encodedVersion = encodeURIComponent(version);
 
     const url = `https://api.lippkg.com/teeth/${encodedUser}/${encodedRepo}/${encodedVersion}`;
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const data = await response.json();
 
     return data.data;
@@ -61,7 +61,7 @@ async function fetchReadme(user: string, repo: string, version: string): Promise
     const encodedVersion = encodeURIComponent(version);
 
     const url = `https://cdn.jsdelivr.net/gh/${encodedUser}/${encodedRepo}@${encodedVersion}/README.md`;
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const data = await response.text();
 
     return data;
