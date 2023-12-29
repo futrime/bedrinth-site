@@ -14,7 +14,7 @@ export default async function Page({
   return (
     <>
       <main>
-        <div className='container mx-auto'>
+        <div className='container mx-auto px-3'>
           {
             results.items.map((result) => (
               <>
