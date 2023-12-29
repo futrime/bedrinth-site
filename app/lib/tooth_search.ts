@@ -54,7 +54,7 @@ async function fetchFromLippkgApi(query: string): Promise<any> {
     const encodedQuery = encodeURIComponent(query);
 
     const url = `https://api.lippkg.com/search/teeth?q=${encodedQuery}`;
-    const response = await fetch(url);
+    const response = await fetch(url, { cache: 'no-store' });
     const data = await response.json();
 
     return data.data;
