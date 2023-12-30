@@ -18,7 +18,17 @@ export interface ToothInfo {
 
 export async function fetchToothInfo(user: string, repo: string, version: string): Promise<ToothInfo> {
     const lippkgApiData = await fetchFromLippkgApi(user, repo, version);
-    const readme = await fetchReadme(user, repo, version);
+
+    let sourceUser = user;
+    let sourceRepo = repo;
+    // if .source is string and match regex /^github\.com\/[a-zA-Z0-9-]+\/[a-zA-Z0-9-\.]+$/
+    if (typeof lippkgApiData.source === 'string' && /^github\.com\/[a-zA-Z0-9-]+\/[a-zA-Z0-9-.]+$/.test(lippkgApiData.source)) {
+        const sourceParts = lippkgApiData.source.split('/');
+        sourceUser = sourceParts[1];
+        sourceRepo = sourceParts[2];
+    }
+
+    const readme = await fetchReadme(sourceUser, sourceRepo, version);
 
     return {
         toothRepoPath: lippkgApiData.toothRepoPath,

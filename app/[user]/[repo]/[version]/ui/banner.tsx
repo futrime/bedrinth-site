@@ -29,7 +29,7 @@ export default function Banner({ name, description, tags, version, tooth, releas
     }
 
     return (
-        <div className='py-10 bg-slate-100'>
+        <div className='py-10 bg-slate-100 px-3'>
             <div className='container mx-auto'>
                 <div className='flex mt-5'>
                     <h1 className='text-2xl mr-3'>
