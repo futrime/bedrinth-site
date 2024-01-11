@@ -1,4 +1,5 @@
 import { remark } from 'remark';
+import remarkGfm from 'remark-gfm';
 import html from 'remark-html';
 
 export default async function Readme({ readme }: Readonly<{
@@ -6,6 +7,7 @@ export default async function Readme({ readme }: Readonly<{
 }>) {
     const processedReadme = await remark()
         .use(html)
+        .use(remarkGfm)
         .process(readme);
     const contentHtml = processedReadme.toString();
 
