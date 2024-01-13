@@ -17,7 +17,7 @@ export default async function Page({
                     tooth={toothInfo.toothRepoPath}
                     releaseTime={toothInfo.releaseTime}
                 />
-                <Readme readme={toothInfo.readme} />
+                <Readme readme={toothInfo.readme} ropeInfo = {params} version={toothInfo.version}/>
             </main>
         </>
     )
