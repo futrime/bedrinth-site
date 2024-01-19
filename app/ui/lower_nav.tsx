@@ -31,7 +31,7 @@ export default function LowerNav() {
                 <ul className='flex'>
                     {TAB_ITEM_LIST.map((tabItem, index) => (
                         <li key={index}>
-                            <Link href={tabItem.href} className="block mx-1 px-2 py-3">
+                            <Link href={tabItem.href} className="block mx-1 px-2 py-3 hover:text-blue-600 transition">
                                 {tabItem.name}
                             </Link>
                         </li>

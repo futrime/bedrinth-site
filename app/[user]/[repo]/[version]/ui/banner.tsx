@@ -55,7 +55,7 @@ export default function Banner({ name, description, tags, version, tooth, releas
                         </span>
                     </div>
                 </div>
-                <div className='flex mt-5'>
+                <div className='flex mt-5 text-sm text-gray-600'>
                     <span className='mr-2'>
                         Version: {version}
                     </span>
@@ -67,13 +67,13 @@ export default function Banner({ name, description, tags, version, tooth, releas
                     </span>
                 </div>
                 <div className='mt-5 flex justify-start'>
-                    <div className='flex bg-slate-200 p-3'>
+                    <div className='flex bg-slate-200 p-3 rounded-l-md break-all'>
                         <code>
                             lip install {tooth}@{version}
                         </code>
                     </div>
                     <button
-                        className='flex bg-slate-300 p-3'
+                        className='flex bg-slate-300 p-3 rounded-r-md hover:bg-slate-400 transition'
                         onClick={e => {
                             handleClipboardClick();
                         }}

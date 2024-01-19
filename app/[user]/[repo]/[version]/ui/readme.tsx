@@ -12,7 +12,7 @@ export default async function Readme({ readme }: Readonly<{
     return (
         <div className='py-10 px-3'>
             <div
-                className='container mx-auto prose'
+                className='container mx-auto prose text-justify'
                 dangerouslySetInnerHTML={{ __html: contentHtml }}
             />
         </div>
