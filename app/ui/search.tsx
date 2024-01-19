@@ -20,10 +20,10 @@ export default function Search() {
 
     return (
         <>
-            <div className='flex border-2'>
+            <div className='flex'>
                 <input
                     type='text'
-                    className='px-4 bg-slate-100'
+                    className='w-8/12 ml-auto px-4 bg-gray-200 rounded-md transition-all border-0 focus:ring-2 focus:bg-slate-100 focus:w-full focus:outline-none'
                     placeholder='Search'
                     onChange={e => handleSearch(e.target.value)}
                 />

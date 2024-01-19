@@ -10,10 +10,10 @@ export default function UpperNav() {
                     <Image src='/logo.webp' alt='logo' height={50} width={50}
                         className='h-7 w-7' />
                 </Link>
-                <div className='flex-grow m-1 flex'>
-                    <span className='my-auto'>lip Index</span>
+                <div className='flex-grow my-auto flex'>
+                    <a href='/'><h2 className='my-auto text-lg font-semibold uppercase'>lip Index</h2></a>
                 </div>
-                <div className='flex-none m-1 flex'>
+                <div className='flex-grow mx-2 my-auto'>
                     <Search />
                 </div>
             </div>
