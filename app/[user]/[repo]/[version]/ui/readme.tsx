@@ -1,4 +1,4 @@
-import { remark } from 'remark';
+import {remark} from 'remark';
 import remarkGfm from 'remark-gfm';
 import html from 'remark-html';
 import RemarkLinkRewrite from "remark-link-rewrite";
@@ -27,12 +27,12 @@ export default async function Readme({ readme ,ropeInfo:{user,repo},version }: R
         .process(readme);
     const contentHtml = processedReadme.toString();
 
-    return (
-        <div className='py-10 px-3'>
-            <div
-                className='container mx-auto prose'
-                dangerouslySetInnerHTML={{ __html: contentHtml }}
-            />
-        </div>
-    )
+  return (
+    <div className="py-10 px-3">
+      <div
+        className="container mx-auto prose text-justify"
+        dangerouslySetInnerHTML={{__html: contentHtml}}
+      />
+    </div>
+  );
 }

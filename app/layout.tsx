@@ -1,8 +1,12 @@
-import { inter } from './ui/fonts'
-import './ui/global.css'
-import Header from './ui/header'
+import { type JSX } from 'react';
 
-export default function Layout({ children, }: Readonly<{ children: React.ReactNode }>) {
+import { inter } from '@/app/ui/fonts';
+import './ui/global.css';
+import Header from './ui/header';
+
+export default function Layout ({
+  children
+}: Readonly<{ children: React.ReactNode }>): JSX.Element {
   return (
     <html lang="en">
       <body className={`${inter.className} antialiased h-screen flex flex-col`}>
@@ -10,5 +14,5 @@ export default function Layout({ children, }: Readonly<{ children: React.ReactNo
         {children}
       </body>
     </html>
-  )
+  );
 }

@@ -1,24 +1,27 @@
-import { fetchToothInfo } from "@/app/lib/tooth_info"
-import Banner from "./ui/banner"
-import Readme from "./ui/readme"
+import { type JSX } from 'react';
 
-export default async function Page({
-    params
-}: Readonly<{ params: { user: string, repo: string, version: string } }>) {
-    const toothInfo = await fetchToothInfo(params.user, params.repo, params.version)
-    return (
-        <>
-            <main>
-                <Banner
-                    name={toothInfo.name}
-                    description={toothInfo.description}
-                    tags={toothInfo.tags}
-                    version={toothInfo.version}
-                    tooth={toothInfo.toothRepoPath}
-                    releaseTime={toothInfo.releaseTime}
-                />
-                <Readme readme={toothInfo.readme} ropeInfo = {params} version={toothInfo.version}/>
-            </main>
-        </>
-    )
+import { getTooth } from '@/app/lib/lip_index_api';
+import { getReadme } from '@/app/lib/jsdelivr';
+import Banner from './ui/banner';
+import Readme from './ui/readme';
+
+export default async function Page ({
+  params
+}: Readonly<{ params: { user: string, repo: string, version: string } }>): Promise<JSX.Element> {
+  const result = await getTooth(params.user, params.repo, params.version);
+  const readme = await getReadme(params.user, params.repo, params.version);
+
+  return (
+    <main>
+      <Banner
+        name={result.name}
+        description={result.description}
+        tags={result.tags}
+        version={result.version}
+        tooth={result.repoPath}
+        releasedAt={result.releasedAt}
+      />
+      <Readme readme={readme} ropeInfo = {params} version={result.version}/>
+    </main>
+  );
 }
