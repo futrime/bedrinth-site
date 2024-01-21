@@ -21,7 +21,7 @@ export default async function Page ({
         tooth={result.repoPath}
         releasedAt={result.releasedAt}
       />
-      <Readme readme={readme} />
+      <Readme readme={readme} ropeInfo = {params} version={result.version}/>
     </main>
   );
 }
