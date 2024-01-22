@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import React, { type JSX } from 'react';
 
 import { searchTooth } from '@/app/lib/lip_index_api';
+import pluginCard from './ui/pluginCard';
 
 export default async function Page ({
   searchParams
@@ -14,8 +14,8 @@ export default async function Page ({
 
   return (
     <main>
-      <div className="container mx-auto px-3 mt-24">
-        {result.items.map(result => (
+      <div className="container mx-auto px-3 mt-24 pt-4">
+        {/* {result.items.map(result => (
           <React.Fragment key={result.repoPath}>
             <Link
               href={`/${result.repoOwner}/${result.repoName}/${result.latestVersion}`}
@@ -26,7 +26,8 @@ export default async function Page ({
             </Link>
             <div className="border-t-2" />
           </React.Fragment>
-        ))}
+        ))} */}
+        {result.items.map(pluginCard)}
       </div>
     </main>
   );
