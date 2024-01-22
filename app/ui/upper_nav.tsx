@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-
+import { Suspense } from 'react';
 import { type JSX } from 'react';
 
 import Search from '@/app/ui/search';
@@ -25,9 +25,11 @@ export default function UpperNav (): JSX.Element {
             </h2>
           </a>
         </div>
-        <div className="flex-grow mx-2 my-auto">
-          <Search />
-        </div>
+        <Suspense>
+          <div className="flex-grow mx-2 my-auto">
+            <Search />
+          </div>
+        </Suspense>
       </div>
     </nav>
   );
