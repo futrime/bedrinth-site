@@ -1,6 +1,7 @@
 'use client';
 
 import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
+import Link from 'next/link';
 import { type JSX } from 'react';
 
 export default function Banner ({
@@ -76,6 +77,7 @@ export default function Banner ({
             <CheckIcon className="lipweb-check-icon h-6 w-6 hidden" />
           </button>
         </div>
+        <Link href={`https://${tooth}`} className='pt-4 text-blue-400'>Go to the rope</Link>
       </div>
     </div>
   );
