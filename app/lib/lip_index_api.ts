@@ -86,7 +86,7 @@ export async function searchTooth (
   const url = new URL('/search/teeth', LIP_INDEX_API_URL);
   url.search = params.toString();
 
-  const response = await fetch(url);
+  const response = await fetch(url, { cache: 'no-store' });
   const data = await response.json();
 
   return data.data;
