@@ -77,7 +77,7 @@ export default function Banner ({
             <CheckIcon className="lipweb-check-icon h-6 w-6 hidden" />
           </button>
         </div>
-        <Link href={`https://${tooth}`} className='pt-4 text-blue-400'>Go to the rope</Link>
+        <Link href={`https://${tooth}`} className='pt-4 text-blue-400'>Go to the repo</Link>
       </div>
     </div>
   );
