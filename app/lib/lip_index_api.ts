@@ -9,9 +9,8 @@ export interface GetToothResult {
   author: string
   tags: string[]
   avatarUrl: string | null
-  source: string
-  sourceRepoCreatedAt: string
-  sourceRepoStarCount: number
+  repoCreatedAt: string
+  starCount: number
   versions: Array<{ version: string, releasedAt: string }>
 }
 
@@ -29,9 +28,8 @@ export interface SearchToothResult {
     author: string
     tags: string[]
     avatarUrl: string | null
-    source: string
-    sourceRepoCreatedAt: string
-    sourceRepoStarCount: number
+    repoCreatedAt: string
+    starCount: number
   }>
 }
 

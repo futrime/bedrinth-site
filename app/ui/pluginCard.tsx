@@ -25,7 +25,7 @@ export default function pluginCard(result: ResultItem) {
             {result.author}
           </p>
           <p className='flex flex-row mr-4 lg:mr-0'><StarIcon className='h-5 mr-1 sm:mr-3' />
-            {result.sourceRepoStarCount}
+            {result.starCount}
           </p>
           <p className='flex flex-row mr-4 lg:mr-0'><TagIcon className='h-5 mr-1 sm:mr-3' />
             {result.latestVersion}
