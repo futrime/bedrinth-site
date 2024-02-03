@@ -8,21 +8,13 @@ interface TabItem {
 
 const TAB_ITEM_LIST: TabItem[] = [
   {
-    name: 'Basics',
+    name: 'Home',
+    href: '/'
+  },
+  {
+    name: 'Documentation',
     href: 'https://docs.lippkg.com/'
   },
-  {
-    name: 'Tutorials',
-    href: 'https://docs.lippkg.com/tutorials/create_a_lip_tooth.html'
-  },
-  {
-    name: 'Commands',
-    href: 'https://docs.lippkg.com/commands/lip.html'
-  },
-  {
-    name: 'Packages',
-    href: '/'
-  }
 ];
 
 export default function LowerNav (): JSX.Element {
