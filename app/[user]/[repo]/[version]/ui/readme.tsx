@@ -28,9 +28,9 @@ export default async function Readme({ readme ,repoInfo:{user,repo},version }: R
   const contentHtml = processedReadme.toString();
 
   return (
-    <div className="py-10 px-3">
+    <div className="py-10 px-3 text-primary">
       <div
-        className="container mx-auto prose text-justify"
+        className="container mx-auto prose dark:prose-invert text-justify"
         dangerouslySetInnerHTML={{__html: contentHtml}}
       />
     </div>

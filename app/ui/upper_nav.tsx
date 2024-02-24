@@ -4,11 +4,12 @@ import { Suspense } from 'react';
 import { type JSX } from 'react';
 
 import Search from '@/app/ui/search';
+import { ModeToggle } from './ModeToggle';
 
 export default function UpperNav (): JSX.Element {
   return (
     <nav>
-      <div className="container mx-auto flex">
+      <div className="container mx-auto flex justify-normal">
         <Link href="/" className="flex-none m-1 p-2">
           <Image
             src="/logo.webp"
@@ -30,6 +31,7 @@ export default function UpperNav (): JSX.Element {
             <Search />
           </div>
         </Suspense>
+        <ModeToggle/>
       </div>
     </nav>
   );
