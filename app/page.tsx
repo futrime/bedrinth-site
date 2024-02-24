@@ -14,7 +14,7 @@ export default async function Page ({
 
   return (
     <main>
-      <div className="container mx-auto px-3 mt-24 pt-4">
+      <div className="container mx-auto px-3 mt-24 pt-4 bg-background text-foreground">
         {result.items.map(pluginCard)}
       </div>
     </main>

@@ -40,14 +40,14 @@ export default function Banner ({
   };
 
   return (
-    <div className="py-10 bg-slate-100 px-3">
+    <div className="py-10 bg-background px-3 text-foreground">
       <div className="container mx-auto">
         <div className="flex mt-24">
           <h1 className="text-2xl mr-3">{name}</h1>
           {tags.map(tag => (
             <div
               key={tag}
-              className="rounded-full border border-gray-500 flex text-gray-500 mx-1 px-4 py-1"
+              className="rounded-lg border bg-secondary flex mx-1 px-4 py-1"
             >
               <span>{tag}</span>
             </div>
@@ -58,19 +58,19 @@ export default function Banner ({
             <span>{description}</span>
           </div>
         </div>
-        <div className="flex mt-5 text-sm text-gray-600">
+        <div className="flex mt-5 text-sm">
           <span className="mr-2">Version: {version}</span>
           <span className="mr-2">|</span>
           <span>Released: {releaseTimeString}</span>
         </div>
         <div className="mt-5 flex justify-start">
-          <div className="flex bg-slate-200 p-3 rounded-l-md break-all">
+          <div className="flex bg-slate-200 dark:bg-slate-700 p-3 rounded-l-md break-all">
             <code>
               lip install {tooth}@{version}
             </code>
           </div>
           <button
-            className="flex bg-slate-300 p-3 rounded-r-md hover:bg-slate-400 transition"
+            className="flex bg-slate-300 dark:bg-slate-600 p-3 rounded-r-md hover:bg-slate-400 dark:hover:bg-slate-500 transition"
             onClick={() => handleClipboardClick()}
           >
             <ClipboardIcon className="lipweb-clipboard-icon h-6 w-6" />
