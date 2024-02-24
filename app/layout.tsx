@@ -14,7 +14,7 @@ export default function Layout ({
       <body className={`${inter.className} antialiased h-screen flex flex-col`}>
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
