@@ -30,7 +30,7 @@ export default async function Readme({ readme ,repoInfo:{user,repo},version }: R
   return (
     <div className="py-10 px-3 text-primary">
       <div
-        className="container mx-auto prose dark:prose-invert text-justify"
+        className="container prose dark:prose-invert"
         dangerouslySetInnerHTML={{__html: contentHtml}}
       />
     </div>
