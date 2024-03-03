@@ -29,7 +29,7 @@ export function Pageination({
     return ls;
 
   }
-  if (totalPages != 1) {
+  if (totalPages > 1) {
     return (
       <nav
         role="navigation"
