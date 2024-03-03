@@ -20,6 +20,7 @@ export default function Layout ({
         >
           <Header/>
           {children}
+          <footer className='py-3'/>
         </ThemeProvider>
       </body>
     </html>
