@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 
 import { getTooth } from '@/app/lib/lip_index_api';
-import { getReadme } from '@/app/lib/jsdelivr';
+import { getReadme } from '@/app/lib/get_readme';
 import Banner from './ui/banner';
 import Readme from './ui/readme';
 
