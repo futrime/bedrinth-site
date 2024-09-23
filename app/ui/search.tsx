@@ -11,6 +11,7 @@ export default function Search (): JSX.Element {
 
     if (query !== '') {
       params.set('q', query);
+      params.delete('page');
     } else {
       params.delete('q');
     }
