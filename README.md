@@ -1,6 +1,6 @@
-# lipweb
+# lippkg-site
 
-An lip package online indexer
+The Minecraft Bedrock mod index
 
 ## Install
 
@@ -27,4 +27,4 @@ PRs accepted.
 
 ## License
 
-AGPL-3.0-only © lippkg
+AGPL-3.0-only © futrime
