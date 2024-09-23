@@ -1,6 +1,6 @@
 import React, { type JSX } from 'react';
 
-import { searchTooth } from '@/app/lib/lip_index_api';
+import { searchTooth } from '@/lib/api';
 import pluginCard from './ui/pluginCard';
 import { Pageination } from './ui/Pagination';
 

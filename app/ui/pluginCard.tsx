@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import React from 'react';
 import { TagIcon, CalendarDaysIcon, StarIcon } from '@heroicons/react/16/solid';
-import { SearchToothResult } from '../lib/lip_index_api';
+import { SearchToothResult } from '../../lib/api';
 
 type ResultItem = SearchToothResult['items'][number]
 export default function pluginCard(result: ResultItem) {

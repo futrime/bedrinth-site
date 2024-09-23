@@ -6,7 +6,7 @@ import Header from './ui/header';
 
 import { ThemeProvider } from './ui/theme-provider';
 
-export default function Layout ({
+export default function Layout({
   children
 }: Readonly<{ children: React.ReactNode }>): JSX.Element {
   return (
@@ -18,9 +18,9 @@ export default function Layout ({
           enableSystem
           disableTransitionOnChange
         >
-          <Header/>
+          <Header />
           {children}
-          <footer className='py-3'/>
+          <footer className='py-3' />
         </ThemeProvider>
       </body>
     </html>

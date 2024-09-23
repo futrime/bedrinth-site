@@ -3,7 +3,15 @@ import remarkGfm from 'remark-gfm';
 import html from 'remark-html';
 import RemarkLinkRewrite from 'remark-link-rewrite';
 
-export default async function Readme({ readme ,repoInfo:{user,repo},version }: Readonly<{ readme: string ,repoInfo:{ user: string, repo: string},version:string}>) {
+export default async function Readme({
+  readme,
+  repoInfo: {user, repo},
+  version
+}: Readonly<{
+  readme: string
+  repoInfo: { user: string, repo: string }
+  version: string
+}>) {
   const processedReadme = await remark()
     .use(html)
     .use(remarkGfm)
