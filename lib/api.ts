@@ -41,7 +41,8 @@ export async function searchPackages(
   sort?: 'hotness' | 'updated',
   order?: 'asc' | 'desc'
 ): Promise<SearchPackagesResponse> {
-  const url = new URL('/packages', apiUrl);
+  const url = new URL(apiUrl);
+  url.pathname = url.pathname + '/packages';
   if (q !== undefined) {
     url.searchParams.set('q', q);
   }
@@ -65,7 +66,8 @@ export async function getPackage(
   source: string,
   identifier: string
 ): Promise<GetPackageResponse> {
-  const url = new URL(`/packages/${source}/${identifier}`, apiUrl);
+  const url = new URL(apiUrl);
+  url.pathname = url.pathname + `/packages/${source}/${identifier}`;
   const response = await fetch(url);
   return (await response.json()).data;
 }
