@@ -4,7 +4,7 @@ import { Suspense } from 'react';
 import { type JSX } from 'react';
 
 import Search from '@/app/ui/search';
-import { ModeToggle } from './ModeToggle';
+import { ModeToggle } from './modeToggle';
 
 export default function UpperNav (): JSX.Element {
   return (

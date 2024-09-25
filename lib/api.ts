@@ -31,7 +31,7 @@ export interface GetPackageResponse {
   versions: Array<{
     version: string;
     releasedAt: string;
-  }>
+  }>;
 }
 
 export async function searchPackages(
