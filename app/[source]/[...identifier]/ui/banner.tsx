@@ -3,16 +3,16 @@
 import type { GetPackageResponse } from '@/lib/api';
 import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
 import Link from 'next/link';
-import { type JSX } from 'react';
+import { useState, type JSX } from 'react';
 
-function commandBuilder(pkg: GetPackageResponse): string {
+function commandBuilder(pkg: GetPackageResponse,version?:string): string {
   if (pkg.packageManager == 'lip') {
     if (pkg.source == 'github') {
-      return `lip install github.com/${pkg.identifier}`;
+      return `lip install github.com/${pkg.identifier}${version?`@${version}`:''}`;
     }
   } else if (pkg.packageManager == 'pip') {
     if (pkg.source == 'pypi') {
-      return `pip install ${pkg.identifier}`;
+      return `pip install ${pkg.identifier}${version?`==${version}`:''}`;
     }
   }
   return '';
@@ -36,10 +36,11 @@ export default function Banner({
 }: Readonly<{
   pkg: GetPackageResponse;
 }>): JSX.Element {
+  const [version, setVersion] = useState<string|undefined>();
   const releaseTimeString = new Date(
     pkg.versions[0].releasedAt
   ).toLocaleString();
-  const installCmd = commandBuilder(pkg);
+  const installCmd = commandBuilder(pkg,version);
   const handleClipboardClick = (): void => {
     navigator.clipboard.writeText(installCmd).catch(() => {
       console.error('Failed to copy to clipboard');
@@ -78,12 +79,17 @@ export default function Banner({
           </div>
         </div>
         <div className='flex mt-5 text-sm'>
-          <span className='mr-2'>Version: {pkg.versions[0].version}</span>
+          <span className='mr-2'>Latest Version: {pkg.versions[0].version}</span>
           <span className='mr-2'>|</span>
           <span>Released: {releaseTimeString}</span>
         </div>
         <div className='mt-5 flex justify-start'>
-          <div className='flex bg-slate-200 dark:bg-slate-700 p-3 rounded-l-md break-all'>
+          <select className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-l-md' onChange={(e)=>{
+            setVersion(e.target.value);
+          }}>
+            {pkg.versions.map(({version}) => (<option key={version} value={version}>{version}</option>))}
+          </select>
+          <div className='flex bg-slate-200 dark:bg-slate-700 p-3 break-all'>
             <code>{installCmd}</code>
           </div>
           <button
@@ -95,7 +101,7 @@ export default function Banner({
           </button>
         </div>
         <Link href={reamMeLinkBuilder(pkg)} className='pt-4 text-blue-400'>
-          Go to the repo
+          Go to the source
         </Link>
       </div>
     </div>
