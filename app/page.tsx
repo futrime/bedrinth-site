@@ -1,24 +1,32 @@
 import React, { type JSX } from 'react';
 
-import { searchTooth } from '@/lib/api';
+import { searchPackages } from '@/lib/api';
 import pluginCard from './ui/pluginCard';
-import { Pageination } from './ui/Pagination';
+import { Pageination } from './ui/pagination';
 
-export default async function Page ({
-  searchParams
+export default async function Page({
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  searchParams,
 }: Readonly<{
   searchParams?: {
-    q?: string
-    page?: number
-  }
+    q?: string;
+    page?: number;
+  };
 }>): Promise<JSX.Element> {
-  const result = await searchTooth(searchParams?.q,void 0,searchParams?.page);
+  const result = await searchPackages(
+    searchParams?.q,
+    undefined,
+    searchParams?.page
+  );
   return (
     <main>
-      <div className="container mx-auto px-3 mt-24 pt-4 bg-background text-foreground">
+      <div className='container mx-auto px-3 mt-24 pt-4 bg-background text-foreground'>
         {result.items.map(pluginCard)}
       </div>
-      <Pageination pageIndex={result.pageIndex} totalPages={result.totalPages}/>
+      <Pageination
+        pageIndex={result.pageIndex}
+        totalPages={result.totalPages}
+      />
     </main>
   );
 }

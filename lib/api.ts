@@ -1,35 +1,37 @@
 const apiUrl = 'https://api.lippkg.com/v2';
 
 export interface SearchPackagesResponse {
-  pageIndex: number
-  totalPages: number
+  pageIndex: number;
+  totalPages: number;
   items: Array<{
-    source: string
-    identifier: string
-    name: string
-    description: string
-    author: string
-    tags: Array<string>
-    avatarUrl: string
-    hotness: number
-    updated: string
-  }>
+    packageManager: 'lip' | 'pip';
+    source: 'github' | 'pypi';
+    identifier: string;
+    name: string;
+    description: string;
+    author: string;
+    tags: string[];
+    avatarUrl: string | null;
+    hotness: number;
+    updated: string;
+  }>;
 }
 
 export interface GetPackageResponse {
-  source: string
-  identifier: string
-  name: string
-  description: string
-  author: string
-  tags: Array<string>
-  avatarUrl: string
-  hotness: number
-  updated: string
+  packageManager: 'lip' | 'pip';
+  source: 'github' | 'pypi';
+  identifier: string;
+  name: string;
+  description: string;
+  author: string;
+  tags: string[];
+  avatarUrl: string | null;
+  hotness: number;
+  updated: string;
   versions: Array<{
-    version: string
-    releasedAt: string
-  }>
+    version: string;
+    releasedAt: string;
+  }>;
 }
 
 export async function searchPackages(
@@ -39,7 +41,8 @@ export async function searchPackages(
   sort?: 'hotness' | 'updated',
   order?: 'asc' | 'desc'
 ): Promise<SearchPackagesResponse> {
-  const url = new URL('/packages', apiUrl);
+  const url = new URL(apiUrl);
+  url.pathname = url.pathname + '/packages';
   if (q !== undefined) {
     url.searchParams.set('q', q);
   }
@@ -59,9 +62,12 @@ export async function searchPackages(
   return (await response.json()).data;
 }
 
-export async function getPackage(source: string, identifier: string): Promise<GetPackageResponse> {
-  const url = new URL(`/packages/${source}/${identifier}`, apiUrl);
+export async function getPackage(
+  source: string,
+  identifier: string
+): Promise<GetPackageResponse> {
+  const url = new URL(apiUrl);
+  url.pathname = url.pathname + `/packages/${source}/${identifier}`;
   const response = await fetch(url);
   return (await response.json()).data;
 }
-

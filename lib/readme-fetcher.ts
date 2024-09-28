@@ -1,4 +1,7 @@
-export async function fetchReadme(source: 'github' | 'pypi', identifier: string): Promise<string> {
+export async function fetchReadme(
+  source: 'github' | 'pypi',
+  identifier: string
+): Promise<string> {
   switch (source) {
   case 'github':
     return fetchGithubReadme(identifier);
@@ -8,7 +11,9 @@ export async function fetchReadme(source: 'github' | 'pypi', identifier: string)
 }
 
 async function fetchGithubReadme(identifier: string): Promise<string> {
-  const url = new URL(`https://raw.githubusercontent.com/${identifier}/HEAD/README.md`);
+  const url = new URL(
+    `https://raw.githubusercontent.com/${identifier}/HEAD/README.md`
+  );
   const response = await fetch(url);
   return await response.text();
 }

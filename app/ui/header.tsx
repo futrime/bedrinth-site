@@ -1,7 +1,7 @@
 import { type JSX } from 'react';
 
-import LowerNav from './lower_nav';
-import UpperNav from './upper_nav';
+import LowerNav from './lowerNav';
+import UpperNav from './upperNav';
 
 export default function Header (): JSX.Element {
   return (

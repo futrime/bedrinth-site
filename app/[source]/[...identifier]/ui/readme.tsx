@@ -1,34 +1,33 @@
-import {remark} from 'remark';
+import { remark } from 'remark';
 import remarkGfm from 'remark-gfm';
 import html from 'remark-html';
 import RemarkLinkRewrite from 'remark-link-rewrite';
-
+import type { GetPackageResponse } from '@/lib/api';
 export default async function Readme({
   readme,
-  repoInfo: {user, repo},
-  version
+  pkg,
 }: Readonly<{
-  readme: string
-  repoInfo: { user: string, repo: string }
-  version: string
+  readme: string;
+  pkg: GetPackageResponse;
 }>) {
   const processedReadme = await remark()
     .use(html)
     .use(remarkGfm)
-  // .use(RemarkLinkRewrite, {replacer:(url)=>url})
     .use(RemarkLinkRewrite, {
       replacer: (url: string) => {
-        if (
-          url.startsWith('http://') ||
-                    url.startsWith('https://') ||
-                    url.startsWith('#')
-        ) {
+        switch (pkg.source) {
+        case 'github':
+          if (
+            url.startsWith('http://') ||
+              url.startsWith('https://') ||
+              url.startsWith('#')
+          ) {
+            return url;
+          } else {
+            return `https://github.com/${pkg.identifier}/blob/HEAD/${url}`;
+          }
+        case 'pypi':
           return url;
-        } else {
-          const encodedUser = encodeURIComponent(user);
-          const encodedRepo = encodeURIComponent(repo);
-          const encodedVersion = encodeURIComponent(version);
-          return `https://github.com/${encodedUser}/${encodedRepo}/blob/v${encodedVersion}/${url}`;
         }
       },
     })
@@ -36,10 +35,10 @@ export default async function Readme({
   const contentHtml = processedReadme.toString();
 
   return (
-    <div className="py-10 px-3 text-primary">
+    <div className='py-10 px-3 text-primary'>
       <div
-        className="container prose dark:prose-invert"
-        dangerouslySetInnerHTML={{__html: contentHtml}}
+        className='container prose dark:prose-invert prose-img:inline'
+        dangerouslySetInnerHTML={{ __html: contentHtml }}
       />
     </div>
   );
