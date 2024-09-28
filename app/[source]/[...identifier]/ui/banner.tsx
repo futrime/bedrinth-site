@@ -38,7 +38,7 @@ export default function Banner({
 }>): JSX.Element {
   const [version, setVersion] = useState<string|undefined>();
   const releaseTimeString = new Date(
-    pkg.versions[0].releasedAt
+    pkg.versions[0]?.releasedAt
   ).toLocaleString();
   const installCmd = commandBuilder(pkg,version);
   const handleClipboardClick = (): void => {
@@ -73,7 +73,7 @@ export default function Banner({
             </div>
           ))}
         </div>
-        <div className='mt-5'>
+        {pkg.versions.length >0 ?(<><div className='mt-5'>
           <div className='container mx-auto'>
             <span>{pkg.description}</span>
           </div>
@@ -99,7 +99,7 @@ export default function Banner({
             <ClipboardIcon className='lipweb-clipboard-icon h-6 w-6' />
             <CheckIcon className='lipweb-check-icon h-6 w-6 hidden' />
           </button>
-        </div>
+        </div></>):<></>}
         <Link href={reamMeLinkBuilder(pkg)} className='pt-4 text-blue-400'>
           Go to the source
         </Link>
