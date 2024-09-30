@@ -1,4 +1,4 @@
-const apiUrl = 'https://api.lippkg.com/v2';
+const apiUrl = 'https://api.bedrinth.com/v2';
 
 export interface SearchPackagesResponse {
   pageIndex: number;

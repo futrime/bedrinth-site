@@ -1,4 +1,4 @@
-# lippkg-site
+# bedrinth-site
 
 The Minecraft Bedrock mod index
 

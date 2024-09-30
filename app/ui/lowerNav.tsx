@@ -12,8 +12,16 @@ const TAB_ITEM_LIST: TabItem[] = [
     href: '/'
   },
   {
-    name: 'Documentation',
-    href: 'https://docs.lippkg.com/'
+    name: 'lip',
+    href: 'https://github.com/futrime/lip'
+  },
+  {
+    name: 'LeviLamina',
+    href: 'https://github.com/LiteLDev/LeviLamina'
+  },
+  {
+    name: 'Endstone',
+    href: 'https://github.com/EndstoneMC/endstone'
   },
 ];
 

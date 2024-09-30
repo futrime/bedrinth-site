@@ -22,7 +22,7 @@ export default function UpperNav (): JSX.Element {
         <div className="flex-grow my-auto flex">
           <a href="/">
             <h2 className="my-auto text-lg font-semibold uppercase">
-              lip Index
+              Bedrinth
             </h2>
           </a>
         </div>
