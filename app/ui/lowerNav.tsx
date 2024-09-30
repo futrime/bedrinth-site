@@ -8,7 +8,7 @@ interface TabItem {
 
 const TAB_ITEM_LIST: TabItem[] = [
   {
-    name: 'Home',
+    name: 'Bedrinth',
     href: '/'
   },
   {
