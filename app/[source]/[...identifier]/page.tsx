@@ -5,7 +5,7 @@ import { fetchReadme } from '@/lib/readme-fetcher';
 import Banner from './ui/banner';
 import Readme from './ui/readme';
 
-export async function generateMetadat({
+export async function generateMetadata({
   params,
 }: Readonly<{
   params: { source: string; identifier: string[] };

@@ -4,7 +4,7 @@ import { searchPackages } from '@/lib/api';
 import pluginCard from './ui/pluginCard';
 import { Pageination } from './ui/pagination';
 
-export const matedate: Metadata = {
+export const metadata: Metadata = {
   title:'Bedrinth'
 };
 
