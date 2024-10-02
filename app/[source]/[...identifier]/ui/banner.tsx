@@ -128,7 +128,9 @@ export default function Banner({
               </div>
               {pkg.source == 'github' && pkg.packageManager == 'none' ? (
                 <Link
-                  href={reamMeLinkBuilder(pkg)}
+                  href={`https://github.com/${pkg.identifier}/releases/tag/${
+                    version ?? pkg.versions[0].version
+                  }`}
                   className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-r-md hover:bg-slate-400 dark:hover:bg-slate-500 transition'
                 >
                   <DocumentArrowDownIcon className='h-6 w-6' />
