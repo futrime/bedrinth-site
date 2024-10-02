@@ -1,25 +1,46 @@
 'use client';
 
 import type { GetPackageResponse } from '@/lib/api';
-import { ClipboardIcon, CheckIcon } from '@heroicons/react/24/outline';
+import { Result } from '@/lib/result';
+import {
+  ClipboardIcon,
+  CheckIcon,
+  DocumentArrowDownIcon,
+} from '@heroicons/react/24/outline';
 import Link from 'next/link';
 import { useState, type JSX } from 'react';
 
-function commandBuilder(pkg: GetPackageResponse,version?:string): string {
+function commandBuilder(
+  pkg: GetPackageResponse,
+  version?: string
+): Result<string, string> {
   if (pkg.packageManager == 'lip') {
     if (pkg.source == 'github') {
-      return `lip install github.com/${pkg.identifier}${version?`@${version}`:''}`;
+      // lip--github
+      return Result.Ok(
+        `lip install github.com/${pkg.identifier}${
+          version ? `@${version}` : ''
+        }`
+      );
     }
   } else if (pkg.packageManager == 'pip') {
     if (pkg.source == 'pypi') {
-      return `pip install ${pkg.identifier}${version?`==${version}`:''}`;
+      // pip--pypi
+      return Result.Ok(
+        `pip install ${pkg.identifier}${version ? `==${version}` : ''}`
+      );
     }
+  } else if (pkg.packageManager == 'none') {
+    // none--github
+    return Result.Err(
+      'This package does not support installation via a package manager'
+    );
   }
-  return '';
+  return Result.Err('');
 }
 
 function reamMeLinkBuilder(pkg: GetPackageResponse): string {
-  if (pkg.packageManager == 'lip') {
+  if (pkg.packageManager == 'lip' || pkg.packageManager == 'none') {
     if (pkg.source == 'github') {
       return `https://github.com/${pkg.identifier}`;
     }
@@ -36,15 +57,17 @@ export default function Banner({
 }: Readonly<{
   pkg: GetPackageResponse;
 }>): JSX.Element {
-  const [version, setVersion] = useState<string|undefined>();
+  const [version, setVersion] = useState<string | undefined>();
   const releaseTimeString = new Date(
     pkg.versions[0]?.releasedAt
   ).toLocaleString();
-  const installCmd = commandBuilder(pkg,version);
+  const installCmd = commandBuilder(pkg, version);
   const handleClipboardClick = (): void => {
-    navigator.clipboard.writeText(installCmd).catch(() => {
-      console.error('Failed to copy to clipboard');
-    });
+    navigator.clipboard
+      .writeText(installCmd.ok ? installCmd.val : '')
+      .catch(() => {
+        console.error('Failed to copy to clipboard');
+      });
 
     const clipboardIcon = document.querySelector('.lipweb-clipboard-icon');
     const checkIcon = document.querySelector('.lipweb-check-icon');
@@ -73,33 +96,58 @@ export default function Banner({
             </div>
           ))}
         </div>
-        {pkg.versions.length >0 ?(<><div className='mt-5'>
-          <div className='container mx-auto'>
-            <span>{pkg.description}</span>
-          </div>
-        </div>
-        <div className='flex mt-5 text-sm'>
-          <span className='mr-2'>Latest Version: {pkg.versions[0].version}</span>
-          <span className='mr-2'>|</span>
-          <span>Released: {releaseTimeString}</span>
-        </div>
-        <div className='mt-5 flex justify-start'>
-          <select className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-l-md' onChange={(e)=>{
-            setVersion(e.target.value);
-          }}>
-            {pkg.versions.map(({version}) => (<option key={version} value={version}>{version}</option>))}
-          </select>
-          <div className='flex bg-slate-200 dark:bg-slate-700 p-3 break-all'>
-            <code>{installCmd}</code>
-          </div>
-          <button
-            className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-r-md hover:bg-slate-400 dark:hover:bg-slate-500 transition'
-            onClick={() => handleClipboardClick()}
-          >
-            <ClipboardIcon className='lipweb-clipboard-icon h-6 w-6' />
-            <CheckIcon className='lipweb-check-icon h-6 w-6 hidden' />
-          </button>
-        </div></>):<></>}
+        {pkg.versions.length > 0 ? (
+          <>
+            <div className='mt-5'>
+              <div className='container mx-auto'>
+                <span>{pkg.description}</span>
+              </div>
+            </div>
+            <div className='flex mt-5 text-sm'>
+              <span className='mr-2'>
+                Latest Version: {pkg.versions[0].version}
+              </span>
+              <span className='mr-2'>|</span>
+              <span>Released: {releaseTimeString}</span>
+            </div>
+            <div className='mt-5 flex justify-start'>
+              <select
+                className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-l-md'
+                onChange={(e) => {
+                  setVersion(e.target.value);
+                }}
+              >
+                {pkg.versions.map(({ version }) => (
+                  <option key={version} value={version}>
+                    {version}
+                  </option>
+                ))}
+              </select>
+              <div className='flex bg-slate-200 dark:bg-slate-700 p-3 break-all'>
+                <code>{installCmd.val}</code>
+              </div>
+              {pkg.source == 'github' && pkg.packageManager == 'none' ? (
+                <Link
+                  href={reamMeLinkBuilder(pkg)}
+                  className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-r-md hover:bg-slate-400 dark:hover:bg-slate-500 transition'
+                >
+                  <DocumentArrowDownIcon className='h-6 w-6' />
+                </Link>
+              ) : (
+                <button
+                  className='flex bg-slate-300 dark:bg-slate-600 p-3 rounded-r-md hover:bg-slate-400 dark:hover:bg-slate-500 transition'
+                  onClick={() => handleClipboardClick()}
+                >
+                  <ClipboardIcon className='lipweb-clipboard-icon h-6 w-6' />
+                  <CheckIcon className='lipweb-check-icon h-6 w-6 hidden' />
+                </button>
+              )}
+            </div>
+          </>
+        ) : (
+          <></>
+        )}
+
         <Link href={reamMeLinkBuilder(pkg)} className='pt-4 text-blue-400'>
           Go to the source
         </Link>

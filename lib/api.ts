@@ -4,7 +4,7 @@ export interface SearchPackagesResponse {
   pageIndex: number;
   totalPages: number;
   items: Array<{
-    packageManager: 'lip' | 'pip';
+    packageManager: 'lip' | 'pip' | 'none';
     source: 'github' | 'pypi';
     identifier: string;
     name: string;
@@ -18,7 +18,7 @@ export interface SearchPackagesResponse {
 }
 
 export interface GetPackageResponse {
-  packageManager: 'lip' | 'pip';
+  packageManager: 'lip' | 'pip' | 'none';
   source: 'github' | 'pypi';
   identifier: string;
   name: string;

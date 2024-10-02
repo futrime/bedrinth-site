@@ -4,7 +4,7 @@ import {
   CalendarDaysIcon,
   InboxArrowDownIcon,
   CodeBracketSquareIcon,
-  FireIcon
+  FireIcon,
 } from '@heroicons/react/16/solid';
 import type { SearchPackagesResponse } from '../../lib/api';
 import { GithubIcon, PypiIcon } from './icons';
@@ -47,9 +47,11 @@ export default function pluginCard(result: ResultItem) {
             <CodeBracketSquareIcon className='h-5 mr-1 sm:mr-3' />
             {result.source}
             {result.source == 'github' ? (
-              <GithubIcon className='pl-1 h-5 mr-1 sm:mr-3'/>
+              <GithubIcon className='pl-1 h-5 mr-1 sm:mr-3' />
             ) : result.source == 'pypi' ? (
-              <PypiIcon className='pl-1 h-5 mr-1 sm:mr-3'/>
+              <PypiIcon className='pl-1 h-5 mr-1 sm:mr-3' />
+            ) : result.source == 'none' ? (
+              <></>
             ) : (
               <></>
             )}
