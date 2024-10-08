@@ -1,3 +1,5 @@
+import { Result } from './result';
+
 const apiUrl = 'https://api.bedrinth.com/v2';
 
 export interface SearchPackagesResponse {
@@ -70,4 +72,25 @@ export async function getPackage(
   url.pathname = url.pathname + `/packages/${source}/${identifier}`;
   const response = await fetch(url);
   return (await response.json()).data;
+}
+
+type ResponseErr = {
+  code: number;
+  message: string;
+}
+
+type GetPackageResult = Result<GetPackageResponse,ResponseErr>
+
+export async function tryGetPackage(
+  source: string,
+  identifier: string
+):Promise<GetPackageResult> {
+  const url = new URL(apiUrl);
+  url.pathname = url.pathname + `/packages/${source}/${identifier}`;
+  const response = await fetch(url);
+  if(response.ok) {
+    return Result.Ok((await response.json()).data);
+  } else {
+    return Result.Err((await response.json()).error);
+  }
 }
